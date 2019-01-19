@@ -18,7 +18,7 @@ type TimeEntry struct {
 	End      time.Time `json:"end"`
 }
 
-func NewTimer(project string, task string) {
+func NewTimer(project string, task string) *time.Ticker {
 
 	fmt.Println(project)
 
@@ -50,8 +50,8 @@ func NewTimer(project string, task string) {
 			s = s.Mod(s, big.NewInt(60))
 			m = m.Mod(m, big.NewInt(60))
 			fmt.Printf("\rElapsed Time:\t %02d:%02d:%02d", h, m, s)
-
 		}
+		fmt.Println("askldhjasjkhdjsakhdjkashdjskahdjksa")
 	}()
 
 	//output, err := json.Marshal(entry)
@@ -59,6 +59,7 @@ func NewTimer(project string, task string) {
 	//	fmt.Print("could not marshal json")
 	//}
 	//fmt.Print(string(output))
+	return ticker
 
 }
 
@@ -100,12 +101,20 @@ func main() {
 			os.Exit(1)
 		}
 
-		NewTimer(*timeProjectPtr, *timeTaskPtr)
+		t := NewTimer(*timeProjectPtr, *timeTaskPtr)
+
+		reader := bufio.NewReader(os.Stdin)
+		var input string
+		for input != "exit\n" {
+			input, _ = reader.ReadString('\n')
+			if input == "stop\n" {
+				hello  <- &t.C;
+				fmt.Println("sdkaslædasælkdlæas")
+				t.Stop()
+			}
+
+		}
+
 	}
 
-	reader := bufio.NewReader(os.Stdin)
-	var input string
-	for input != "exit\n" {
-		input, _ = reader.ReadString('\n')
-	}
 }
